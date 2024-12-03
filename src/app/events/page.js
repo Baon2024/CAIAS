@@ -3,7 +3,8 @@ import sampleEventsData from "../components/sampleEventsData"
 import EventsList from "../components/eventList"
 import { useEffect, useState } from "react"
 import SearchBar2 from "../components/searchBar2"
-import fetchEventsToDisplay from "../apiFunctions/fetchEventsToDisplay"
+import fetchEventsToDisplay from "../apiFunctions/fetchEventsToDisplay";
+import { fetchEventsToDisplaySupabase } from "../apiFunctions/fetchEventsToDisplaySupabase"
 
 //import sampleEventsData.js
 
@@ -17,6 +18,8 @@ export default function Events() {
             const eventsToDisplay = await fetchEventsToDisplay();
             console.log("Fetched events to display:", eventsToDisplay);
             setEventsToShow(eventsToDisplay);
+            const alternativeEvents = await fetchEventsToDisplaySupabase();
+            console.log("supabase fetched events:", alternativeEvents);
         };
 
         getEvents();

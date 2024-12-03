@@ -3,6 +3,7 @@ import { useState } from "react"
 import ItemCardList from "../components/itemCardList"
 import SearchBar from "../components/searchBar"
 import SearchBar2 from "../components/searchBar2"
+import SocietiesList from "../components/societiesList";
 
 
 export default function Societies() {
@@ -22,7 +23,7 @@ export default function Societies() {
     return (
         <>
           <SearchBar2 searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-          <ItemCardList items={sampleItems} />
+          <SocietiesList />
         </>
     )
 }

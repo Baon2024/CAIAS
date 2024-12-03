@@ -37,7 +37,7 @@ export default function EventCard({
       <CardContent className="grid gap-4 flex-1">
         <div className="flex items-center gap-2 text-sm">
           <Users className="h-4 w-4 text-muted-foreground" />
-          <span className="text-muted-foreground">{society.username}</span>
+          <span className="text-muted-foreground">{eventName}</span>
         </div>
         <p className="text-sm text-muted-foreground line-clamp-2">{eventDescription}</p>
         <div className="grid gap-2 mt-auto">
