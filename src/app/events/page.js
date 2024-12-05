@@ -43,7 +43,7 @@ export default function Events() {
     return (
       <>
         <SearchBar2 />
-        <EventsList />
+        <EventsList eventsToShow={eventsToShow} />
       </>
     )
 }

@@ -1,9 +1,10 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ItemCardList from "../components/itemCardList"
 import SearchBar from "../components/searchBar"
 import SearchBar2 from "../components/searchBar2"
 import SocietiesList from "../components/societiesList";
+import fetchSocietiesToDisplay from "../apiFunctions/fetchSocietiesToDisplay"
 
 
 export default function Societies() {
@@ -20,10 +21,29 @@ export default function Societies() {
         { id: '6', title: 'Item 6', description: 'This is the sixth item' },
       ]
 
+      const [ societiesToShow, setSocietiesToShow ] = useState([]); 
+
+    useEffect(() => {
+        
+        const getSocieties = async () => {
+            const societiesToDisplay = await fetchSocietiesToDisplay();
+            console.log("Fetched events to display:", societiesToDisplay);
+            setSocietiesToShow(societiesToDisplay);
+        };
+
+        getSocieties();
+
+    },[])
+    
+    // Log updated events after the state changes
+   useEffect(() => {
+    console.log("these are the societies that have been fetched, for displaying:", societiesToShow);
+ }, [societiesToShow]); // This will log each time eventsToShow changes
+
     return (
         <>
           <SearchBar2 searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-          <SocietiesList />
+          <SocietiesList societiesToShow={societiesToShow} />
         </>
     )
 }

@@ -7,6 +7,10 @@ import Link from 'next/link'
 
 //interface EventCardProps extends Omit<Event, 'createdAt' | 'updatedAt' | 'publishedAt' | 'documentId'> {}
 
+
+///need to add event.society details, so can display society the event belongs to, and allow user to click through to the society
+
+
 export default function EventCard({
   eventName,
   eventDate,
@@ -16,7 +20,8 @@ export default function EventCard({
   eventImage,
   society,
   documentId,
-  id
+  id,
+  eventUrlLink
 }) {
   return (
   <Link href={`/events/${documentId}`}>
@@ -52,6 +57,11 @@ export default function EventCard({
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-muted-foreground" />
             <span>{eventLocation}</span>
+          </div>
+          <div className="text-right">
+            <div className="bg-secondary text-secondary-foreground rounded-full px-3 py-1">
+              <p className="text-xs text-center">{society.username}</p>
+            </div>
           </div>
         </div>
       </CardContent>

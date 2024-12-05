@@ -5,9 +5,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { User } from 'lucide-react'
+import { useState } from 'react'
 
 export default function Header() {
   const pathname = usePathname()
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 w-full fixed relative isolate shadow-md z-10">
@@ -38,7 +40,7 @@ export default function Header() {
               Events
             </Link>
             <Link 
-              href="/profile" 
+              href={ isLoggedIn ? '/profile' : '/registerSociety'} /* "/profile" */
               className="p-2 rounded-full hover:bg-gray-200"
               aria-label="User Profile"
             >

@@ -16,9 +16,16 @@ export default function addEvent() {
         const newEvent = [
             {
                 eventName: null,
+                eventDate: null,
+                eventTime: null,
+                society: null, // will need to replace this with user id i think? (user.id or whatever the exact path)
+                another
 
             }
         ]
+
+
+        //then post to the API endpoint
     }
 
 

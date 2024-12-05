@@ -1,3 +1,4 @@
+'use client'
 //need to present all societies
 import sampleSocietiesData from "./sampleSocietiesData";
 //import sampleSocietiesData from "./sampleSocietiesData";
@@ -200,12 +201,19 @@ const societies = [
   }
 ]*/
 
-export default function SocietiesList() {
+export default function SocietiesList({societiesToShow}) {
+
+  //need to remove array in order to access societies
+
+
+
+if (societiesToShow) {
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">University Societies</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sampleSocietiesDataMap.map((society) => (
+        {/*sampleSocietiesDataMap*/societiesToShow.map((society) => (
         <Link href={`/societies/${society.documentId}`}>
           <Card key={society.id} className="overflow-hidden">
             <div 
@@ -226,4 +234,5 @@ export default function SocietiesList() {
       </div>
     </div>
   )
+}
 }

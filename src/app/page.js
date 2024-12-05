@@ -9,6 +9,7 @@ import SearchBar2 from "./components/searchBar2";
 import SchoolCard from "./components/schoolCard";
 import SchoolsList from "./components/schoolsList";
 import SocietiesList from "./components/societiesList";
+import fetchSocietiesToDisplay from "./apiFunctions/fetchSocietiesToDisplay";
 //import { useRouter } from "next/router";
 
 export default function Home() {
@@ -27,6 +28,25 @@ export default function Home() {
   /*function onClickHandler(documentId) {
     router.push(`/school/${documentId}`);
   }*/
+    const [ societiesToShow, setSocietiesToShow ] = useState([]); 
+
+    useEffect(() => {
+        
+      const getSocieties = async () => {
+          const societiesToDisplay = await fetchSocietiesToDisplay();
+          console.log("Fetched events to display:", societiesToDisplay);
+          setSocietiesToShow(societiesToDisplay);
+      };
+
+      getSocieties();
+
+  },[])
+  
+  // Log updated events after the state changes
+   useEffect(() => {
+    console.log("these are the societies that have been fetched, for displaying on home page:", societiesToShow);
+   }, [societiesToShow]); // This will log each time eventsToShow changes
+
 
 
   const [ searchTerm, setSearchTerm ] = useState('');
@@ -178,7 +198,7 @@ export default function Home() {
   <>
     <Hero />
     <SearchBar2 searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-    <SocietiesList />
+    <SocietiesList societiesToShow={societiesToShow} />
   </>
   );
 }

@@ -10,6 +10,8 @@ import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
+import { useState, useEffect } from "react";
+import fetchSocietiesToDisplay from "@/app/apiFunctions/fetchSocietiesToDisplay";
 
 const sampleSocietiesDataMap = sampleSocietiesData[0];
 
@@ -23,8 +25,30 @@ export default function societyPage() {
     const selectedSociety = selectedSocietyArray[0];
     console.log("thsi is the selected society:", selectedSociety);
    
-    const societiesEventsToDisplay = selectedSociety.events;
-    console.log("events of the selected society:", societiesEventsToDisplay);
+    /*const societiesEventsToDisplay = selectedSociety.events;
+    console.log("events of the selected society:", societiesEventsToDisplay);*/
+
+    const [ societiesToShow, setSocietiesToShow ] = useState([]); 
+
+    useEffect(() => {
+        
+        const getSocieties = async () => {
+            const societiesToDisplay = await fetchSocietiesToDisplay();
+            console.log("Fetched events to display:", societiesToDisplay);
+            setSocietiesToShow(societiesToDisplay);
+        };
+
+        getSocieties();
+
+    },[])
+
+
+    const selectedSocietyArray2 = societiesToShow.filter(society => society.documentId === societies);
+    console.log("This is the selected society from real strapi info:", selectedSocietyArray2);
+
+    const selectedSociety2 = selectedSocietyArray2[0];
+    console.log("thsi is the selected society from strapi data:", selectedSociety2);
+  
 
     /* 
     example of what the data of a individual society looks like:
@@ -62,8 +86,8 @@ export default function societyPage() {
         },
     
     */
-
-        const { username, events } = selectedSociety
+       if (selectedSociety2) {
+        const { username, events } = selectedSociety2
 
         const currentDate = new Date()
         const upcomingEvents = events.filter(event => new Date(event.eventDate) >= currentDate)
@@ -151,4 +175,5 @@ function EventCard({ event, isPast = false }) {
     </Card>
    </Link>
   )
+}
 }
