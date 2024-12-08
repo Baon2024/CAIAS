@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import EventUploadForm from "./eventForm";
 
 
 //create this page and function before auth system is set-up
@@ -7,31 +8,24 @@ import { useState } from "react";
 
 export default function addEvent() {
 
-    const [ eventName, setEventName ] = useState('');
+    
 
-    function addEventHandler() {
-        //need to determine what event includes
-        //will have one picture, so borrow code for upload media from formalbridge
-
-        const newEvent = [
+        /*const newEvent = [
             {
                 eventName: null,
                 eventDate: null,
                 eventTime: null,
-                society: null, // will need to replace this with user id i think? (user.id or whatever the exact path)
-                another
+                eventTags: tags,
+                society: society.id, // will need to replace this with user id i think? (user.id or whatever the exact path)
+                eventImage: empty
 
             }
-        ]
-
-
-        //then post to the API endpoint
-    }
-
-
+        ]*/
 
     //create the UI for the form with 0v - feed in the inputs you need
     return (
-
+       <>
+         <EventUploadForm />
+       </>
     )
 }

@@ -3,13 +3,46 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { User } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Header() {
   const pathname = usePathname()
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const router = useRouter();
+
+
+  const [jwt, setJwt] = useState(null);
+
+  useEffect(() => {
+    // Initial check for JWT
+    const checkJwt = () => {
+      const storedJwt = localStorage.getItem('jwt')
+      setJwt(storedJwt)
+    }
+    checkJwt()
+
+    // Listen for changes to localStorage
+    const handleStorageChange = () => {
+      checkJwt()
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
+
+    const handleProfileClick = () => {
+      if (jwt) {
+        router.push('/userPage') // Navigate to userPage if logged in
+      } else {
+        //alert('You must be logged in to access this page.')
+        router.push('/registerSociety') // Navigate to registerSociety if not logged in
+      }
+    }
 
   return (
     <header className="fixed top-0 left-0 w-full fixed relative isolate shadow-md z-10">
@@ -39,13 +72,13 @@ export default function Header() {
             >
               Events
             </Link>
-            <Link 
-              href={ isLoggedIn ? '/profile' : '/registerSociety'} /* "/profile" */
-              className="p-2 rounded-full hover:bg-gray-200"
+            <div 
+              onClick={handleProfileClick} 
+              className="p-2 rounded-full hover:bg-gray-200 cursor-pointer" 
               aria-label="User Profile"
             >
               <User className="h-5 w-5 text-gray-700" />
-            </Link>
+            </div>
           </div>
         </nav>
       </div>

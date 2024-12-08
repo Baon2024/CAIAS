@@ -4,7 +4,7 @@ const token = '010112826dc97bc53ef853b7894019f0925ce8484d682aa0f9a9bec06c0c225ff
 export default async function fetchSocietiesToDisplay() {
     //const url = 'http://localhost:1338/api/events?populate=*';
     //const url = 'http://localhost:1338/api/events?populate[society][populate]=*';
-    const url = 'http://localhost:1338/api/users?populate=events.eventImage';
+    const url = 'http://localhost:1337/api/users?populate=events.eventImage';
 
     const response = await fetch(url, {
         method: 'GET',
