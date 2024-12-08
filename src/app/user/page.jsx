@@ -1,7 +1,8 @@
 'use client';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import fetchSocietyEvents from "../api/fetchSocietyEvents";
+//import fetchSocietyEvents from "../api/fetchSocietyEvents";
+import fetchSocietyEvents from "../userPage/fetchSocietyEventsAPI";
 import { EventCard } from "@/components/event-card";
 import { Button } from "@/components/ui/button";
 
@@ -19,9 +20,12 @@ export default function UserPage() {
   function pushToAddEvent() {
     router.push("/addEvent");
   }
+  if (typeof window !== "undefined") {
+    
 
   const user = localStorage.getItem('user');
   console.log("user is:", user);
+  }
 
   useEffect(() => {
     const getSocietyEvents = async () => {

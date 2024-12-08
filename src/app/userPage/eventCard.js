@@ -2,10 +2,12 @@ import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
+import Link from 'next/link'
 
 
-export function EventCard({ event, onCancel, onEdit }) {
+export function EventCard({ event, onCancel, onEdit, path }) {
   return (
+    <Link href={`/events/${path}`}>
     <Card className="w-full max-w-sm overflow-hidden">
       <div className="relative h-48 w-full">
         <Image
@@ -38,5 +40,6 @@ export function EventCard({ event, onCancel, onEdit }) {
         <Button variant="destructive" onClick={() => onCancel(event.id)}>Cancel</Button>
       </CardFooter>
     </Card>
+    </Link>
   )
 }

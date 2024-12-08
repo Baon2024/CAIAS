@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import { useParams } from "next/navigation"
-import sampleSocietiesData from "@/data/sampleSocietiesData";
+//import sampleSocietiesData from "@/data/sampleSocietiesData";
+import sampleSocietiesData from '@/app/components/sampleSocietiesData'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'

@@ -36,8 +36,8 @@ export default function UserPage() {
       router.push(`/editEvent/${id}`);
     }
 
-    const user = localStorage.getItem('user');
-    console.log("user is:", user);
+    //const user = localStorage.getItem('user');
+    //console.log("user is:", user);
 
     useEffect(() => {
       const getSocietyEvents = async () => {
@@ -51,6 +51,10 @@ export default function UserPage() {
         } finally {
           setIsLoading(false);
         }
+
+        const user = localStorage.getItem('user');
+    console.log("user is:", user);
+
       }
   
       getSocietyEvents();
@@ -84,6 +88,7 @@ export default function UserPage() {
                 event={event}
                 onCancel={handleCancelEvent}
                 onEdit={handleEditEvent}
+                path={event.documentId}
               />
             ))}
           </div>

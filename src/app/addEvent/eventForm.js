@@ -24,12 +24,16 @@ const EventUploadForm = () => {
   const [currentTag, setCurrentTag] = useState("")
   const [ eventImage, setEventImage ] = useState();
   const [ selectedFile, setSelectedFile ] = useState(null);
+  
+  
+  if (typeof window !== "undefined") {
+    
 
   const society = localStorage.getItem('user');
   console.log("this is what society is:", society);
   const alteredSociety = JSON.parse(society);
   console.log("and this is json'd society:", alteredSociety);
-  
+  }
   const router = useRouter();
 
   const handleSubmit = async(event) => {
