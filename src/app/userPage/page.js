@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import fetchSocietyEvents from "./fetchSocietyEventsAPI";
 import { EventCard } from "./eventCard";
 import { Button } from "@/components/ui/button";
+import cancelEvent from "./userPageAPIs";
 
 
 export default function UserPage() {
@@ -24,17 +25,33 @@ export default function UserPage() {
 
     //handlecancelevent and haldnleeditevent are two placehodler functions, don't work
 
-    const handleCancelEvent = (id) => {
-      // Implement cancel event logic here
-      console.log(`Cancelling event with id: ${id}`);
-      setSocietyEvents(prevEvents => prevEvents.filter(event => event.id !== id));
-    }
+    
   
     const handleEditEvent = (id) => {
       // Implement edit event logic here
       console.log(`Editing event with id: ${id}`);
       router.push(`/editEvent/${id}`);
     }
+
+    async function cancelEventHandler(documentId) {
+      //e.preventDefault();
+
+      const returnedEventCancellation = await cancelEvent(documentId);
+      console.log("returnedEventCancellation response is:", returnedEventCancellation);
+
+      if (returnedEventCancellation.status === 204) {
+        console.log(`Ticket ${documentId} successfully deleted.`);
+
+        setSocietyEvents((prevEvents) => prevEvents.filter(event => event.documentId !== documentId));
+        
+        // Update state to reflect deletion
+        /*setUserData(prevUserData => ({
+          ...prevUserData,
+          myTicketsListed: prevUserData.myTicketsListed.filter(t => t.id !== ticket.id),
+        }));*/
+    
+    }
+  }
 
     //const user = localStorage.getItem('user');
     //console.log("user is:", user);
@@ -86,7 +103,7 @@ export default function UserPage() {
               <EventCard
                 key={event.id}
                 event={event}
-                onCancel={handleCancelEvent}
+                onCancel={cancelEventHandler}
                 onEdit={handleEditEvent}
                 path={event.documentId}
               />

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Calendar, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,20 +24,35 @@ const EventUploadForm = () => {
   const [currentTag, setCurrentTag] = useState("")
   const [ eventImage, setEventImage ] = useState();
   const [ selectedFile, setSelectedFile ] = useState(null);
+  const [ society, setSociety ] = useState(null)
   
-  
+  let alteredSociety;
   if (typeof window !== "undefined") {
     
 
-  const society = localStorage.getItem('user');
+  /*const society = localStorage.getItem('user');
   console.log("this is what society is:", society);
-  const alteredSociety = JSON.parse(society);
-  console.log("and this is json'd society:", alteredSociety);
+  alteredSociety = JSON.parse(society);
+  console.log("and this is json'd society:", alteredSociety);*/
   }
   const router = useRouter();
 
+  useEffect(() => {
+
+    const societyToSet = localStorage.getItem('user');
+    console.log("this is what society is:", societyToSet);
+    const alteredSocietyToSet = JSON.parse(societyToSet);
+    console.log("and this is json'd society:", alteredSocietyToSet);
+    setSociety(alteredSocietyToSet);
+
+  },[])
+
+
+
   const handleSubmit = async(event) => {
     event.preventDefault()
+
+    console.log("Form submission triggered");
 
     function formatTimeToHHMMSS(time) {
         if (!time.includes(":")) return "00:00:00"; // Default time if input is invalid
@@ -66,7 +81,7 @@ const EventUploadForm = () => {
       eventDescription,
       tags,
       eventImage: { id: eventImage },
-      society: { id: alteredSociety.id }
+      society: { id: society.id }
     }
 
     
@@ -77,7 +92,7 @@ const EventUploadForm = () => {
     console.log("newEventResponse is:", newEventResponse);
      
     if (newEvent) {
-      alert(`new event added for ${alteredSociety.username}`);
+      alert(`new event added for ${society.username}`);
       router.push("/userPage");
 
     }
@@ -122,7 +137,7 @@ async function uploadEventImageHandler() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="event-name">Event Name</Label>
+            <Label id="event-name">Event Name</Label>
             <Input 
               id="event-name" 
               placeholder="Enter event name" 
@@ -148,12 +163,13 @@ async function uploadEventImageHandler() {
                     selected={eventDate}
                     onSelect={setEventDate}
                     initialFocus
+                    required
                   />
                 </PopoverContent>
               </Popover>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="event-time">Time</Label>
+              <Label id="event-time">Time</Label>
               <Input 
                 id="event-time" 
                 type="time" 
@@ -235,7 +251,7 @@ async function uploadEventImageHandler() {
         </form>
       </CardContent>
       <CardFooter>
-        <Button type="submit" className="w-full" onClick={handleSubmit}>Upload Event</Button>
+        <Button type="submit" disabled={!eventImage} className="w-full" onClick={handleSubmit}>Upload Event</Button>
       </CardFooter>
     </Card>
   )

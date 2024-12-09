@@ -6,9 +6,15 @@ import Link from 'next/link'
 
 
 export function EventCard({ event, onCancel, onEdit, path }) {
+
+
+   console.log("documentId is:", event.documentId);
+
+
   return (
-    <Link href={`/events/${path}`}>
+   
     <Card className="w-full max-w-sm overflow-hidden">
+    <Link href={`/events/${path}`}>
       <div className="relative h-48 w-full">
         <Image
           src={`http://localhost:1337${event.eventImage.url}` || "/placeholder.svg?height=192&width=384"}
@@ -35,11 +41,11 @@ export function EventCard({ event, onCancel, onEdit, path }) {
           <span className="text-sm">{event.eventLocation}</span>
         </div>
       </CardContent>
+      </Link>
       <CardFooter className="flex justify-between">
         <Button variant="outline" onClick={() => onEdit(event.id)}>Edit</Button>
-        <Button variant="destructive" onClick={() => onCancel(event.id)}>Cancel</Button>
+        <Button variant="destructive" onClick={() => onCancel(event.documentId)}>Cancel</Button>
       </CardFooter>
     </Card>
-    </Link>
   )
 }
