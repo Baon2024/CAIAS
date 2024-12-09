@@ -12,6 +12,7 @@ export default function UserPage() {
     const router = useRouter();
     const [ societyEvents, setSocietyEvents ] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     function handleLogOut() {
         localStorage.removeItem('jwt');
@@ -33,9 +34,13 @@ export default function UserPage() {
       router.push(`/editEvent/${id}`);
     }
 
-    async function cancelEventHandler(documentId) {
-      //e.preventDefault();
+    async function cancelEventHandler( documentId) {
+      
 
+      if (isSubmitting) return;  // Prevent multiple submissions
+        setIsSubmitting(true);
+
+      try {
       const returnedEventCancellation = await cancelEvent(documentId);
       console.log("returnedEventCancellation response is:", returnedEventCancellation);
 
@@ -43,14 +48,19 @@ export default function UserPage() {
         console.log(`Ticket ${documentId} successfully deleted.`);
 
         setSocietyEvents((prevEvents) => prevEvents.filter(event => event.documentId !== documentId));
-        
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
         // Update state to reflect deletion
         /*setUserData(prevUserData => ({
           ...prevUserData,
           myTicketsListed: prevUserData.myTicketsListed.filter(t => t.id !== ticket.id),
         }));*/
     
-    }
+    
   }
 
     //const user = localStorage.getItem('user');
@@ -86,6 +96,16 @@ export default function UserPage() {
 
     },[societyEvents])
    
+
+   //need to filter societyEvents, so only those with valid createdAt dates are returned
+   let filteredEvents;
+   if (societyEvents) {
+     filteredEvents = societyEvents.filter(event => event.publishedAt !== null);
+   console.log("these are the newScietyEvents:", filteredEvents);
+   }
+   
+   
+
     return (
       <div className="container mx-auto py-8">
         <div className="flex justify-between items-center mb-8">
@@ -99,7 +119,7 @@ export default function UserPage() {
           <div className="text-center">Loading events...</div>
         ) : societyEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {societyEvents.map(event => (
+            {filteredEvents.map(event => (
               <EventCard
                 key={event.id}
                 event={event}

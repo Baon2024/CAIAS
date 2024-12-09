@@ -17,7 +17,7 @@ export function EventCard({ event, onCancel, onEdit, path }) {
     <Link href={`/events/${path}`}>
       <div className="relative h-48 w-full">
         <Image
-          src={`http://localhost:1337${event.eventImage.url}` || "/placeholder.svg?height=192&width=384"}
+          src={`http://localhost:1337/${event.eventImage?.url}` || "/placeholder.svg?height=192&width=384"}
           alt={event.eventName}
           width={500}  // specify width
           height={300} // specify height
@@ -44,7 +44,7 @@ export function EventCard({ event, onCancel, onEdit, path }) {
       </Link>
       <CardFooter className="flex justify-between">
         <Button variant="outline" onClick={() => onEdit(event.id)}>Edit</Button>
-        <Button variant="destructive" onClick={() => onCancel(event.documentId)}>Cancel</Button>
+        <Button variant="destructive" onClick={(e) => onCancel(event.documentId)}>Cancel</Button>
       </CardFooter>
     </Card>
   )

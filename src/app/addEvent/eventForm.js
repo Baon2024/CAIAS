@@ -25,6 +25,7 @@ const EventUploadForm = () => {
   const [ eventImage, setEventImage ] = useState();
   const [ selectedFile, setSelectedFile ] = useState(null);
   const [ society, setSociety ] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   let alteredSociety;
   if (typeof window !== "undefined") {
@@ -87,7 +88,10 @@ const EventUploadForm = () => {
     
     console.log("New Event:", newEvent)
     // Here you would typically send the newEvent object to your backend or state management system
-    
+
+    if (isSubmitting) return;  // Prevent multiple submissions
+    setIsSubmitting(true);
+    try {
     const newEventResponse = await apiToAddEvent(newEvent)
     console.log("newEventResponse is:", newEventResponse);
      
@@ -96,7 +100,11 @@ const EventUploadForm = () => {
       router.push("/userPage");
 
     }
-
+    } catch (error) {
+    console.error(error);
+  } finally {
+    setIsSubmitting(false);
+  }
     
   }
 
@@ -130,12 +138,13 @@ async function uploadEventImageHandler() {
 
   return (
     <Card className="w-full max-w-2xl mx-auto mt-10 mb-10">
+        <form onSubmit={handleSubmit} className="space-y-6">
       <CardHeader>
         <CardTitle>Upload Society Event</CardTitle>
         <CardDescription>Fill in the details to create a new event for your society.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        
           <div className="space-y-2">
             <Label id="event-name">Event Name</Label>
             <Input 
@@ -248,11 +257,12 @@ async function uploadEventImageHandler() {
             <Input id="image" type="file" accept="image/*" onChange={handleFileChange} />
             <button type="button" onClick={uploadEventImageHandler}>Upload event image</button>
           </div>
-        </form>
+        
       </CardContent>
       <CardFooter>
-        <Button type="submit" disabled={!eventImage} className="w-full" onClick={handleSubmit}>Upload Event</Button>
+        <Button type="submit" disabled={!eventImage} className="w-full">Upload Event</Button>
       </CardFooter>
+      </form>
     </Card>
   )
 }
