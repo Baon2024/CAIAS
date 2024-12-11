@@ -3,7 +3,7 @@
 import sampleSocietiesData from "./sampleSocietiesData";
 //import sampleSocietiesData from "./sampleSocietiesData";
 import Link from "next/link";
-
+import Image from "next/image";
 //pass down societies as prop
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 //import { Society } from "./types/society"
@@ -216,12 +216,14 @@ if (societiesToShow) {
         {/*sampleSocietiesDataMap*/societiesToShow.map((society) => (
         <Link href={`/societies/${society.documentId}`}>
           <Card key={society.id} className="overflow-hidden">
-          <div
-            className="h-40 bg-cover bg-center"
-            style={{
-            backgroundImage: `url(${society.logo?.url || '/placeholder.svg?height=160&width=320'})`,
-            }}
-            />
+          <div className="h-40 relative">
+  <Image
+    src={`http://localhost:1337${society.logo?.url || '/placeholder.svg?height=160&width=320'}`}
+    alt={society.username || 'Society Logo'}
+    layout="fill"  // This makes the image fill the container
+    objectFit="cover"  // Ensures the image covers the container
+  />
+</div>
             <CardHeader>
               <CardTitle className="text-xl truncate">{society.username}</CardTitle>
             </CardHeader>
