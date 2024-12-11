@@ -2,6 +2,7 @@
 //page for user to register a society
 import { useRouter } from "next/navigation";
 import { useState } from "react"
+import sendEmailCode from "./apisForSection";
 
 //need to figure out what details need to be known first
 export default function registerSociety() {
@@ -11,7 +12,9 @@ export default function registerSociety() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ message, setMessage ] = useState('');
-    //const [ selectedFile, setSelectedFile ] = useState(null);
+    const [ passwordRecovery, setPasswordRecovery ] = useState(false);
+    const [ emailForRecovery, setEmailForRecovery ] = useState('');
+     //const [ selectedFile, setSelectedFile ] = useState(null);
 
 
     //borrow functions from formalbridge
@@ -50,6 +53,7 @@ export default function registerSociety() {
             email,
             password
         }
+        console.log("this is the value of dataToSend:", dataToSend);
         const user = await signUpUser(dataToSend);
         console.log("here is outcome from registerSocietyHandler:", user);
         //if returned http code is 400, means email already registered, need a message to pop up for that
@@ -119,6 +123,17 @@ export default function registerSociety() {
 
     //lets just add email, username and password - let societies add societyLogo later on userpage
 
+    function passwordRecoveryDisplayHandler() {
+      setPasswordRecovery(prev => !prev);
+    }
+
+    async function sendEmailCodeHandler() {
+      //need the api here to send - /api/auth/forgot-password
+      console.log("this is the emailForRecovery being sent:", emailForRecovery);
+      const response = await sendEmailCode(emailForRecovery);
+      console.log("thsi is the favklue of respoonse assigned retredn sendEmailCode api call:", response);
+    }
+
     return (
         <>
         <p>register society or log in</p>
@@ -137,9 +152,18 @@ export default function registerSociety() {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         <button onClick={logginSocietyHandler}>log-in to society</button>
 
+        <button onClick={passwordRecoveryDisplayHandler}>forgot password?</button>
+
 
         {message && (
             <p>{message}</p>
+        )}
+        { passwordRecovery && (
+          <>
+            <label>enter the email associated with your account</label>
+            <input type="email" value={emailForRecovery} onChange={(e) => setEmailForRecovery(e.target.value)} />
+            <button onClick={sendEmailCodeHandler}>send code to email address</button>
+          </>
         )}
         </>
     )

@@ -5,7 +5,9 @@ import fetchSocietyEvents from "./fetchSocietyEventsAPI";
 import { EventCard } from "./eventCard";
 import { Button } from "@/components/ui/button";
 import cancelEvent from "./userPageAPIs";
-
+import { uploadEventImage } from "../apiFunctions/apiToAddEvent";
+import addLogo from "./addLogoAPI";
+import { fetchUser } from "./addLogoAPI";
 
 export default function UserPage() {
 
@@ -13,6 +15,16 @@ export default function UserPage() {
     const [ societyEvents, setSocietyEvents ] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const [ selectedFile, setSelectedFile ] = useState(null);
+    const [ logoPreview, setLogoPreview ] = useState(null);
+
+
+   async function getStuff() {
+    const trialSociety = await fetchUser();
+    console.log("this is getting user via API:", trialSociety);
+   }
+   getStuff();
 
     function handleLogOut() {
         localStorage.removeItem('jwt');
@@ -26,6 +38,80 @@ export default function UserPage() {
 
     //handlecancelevent and haldnleeditevent are two placehodler functions, don't work
 
+    function handleAddLogo() {
+      
+    }
+    async function uploadEventImage2(file) {
+      const formData = new FormData();
+      formData.append('files', file);
+  
+      try {
+          const response = await fetch('http://localhost:1337/api/upload', {
+              method: 'POST',
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+              },
+              body: formData,
+          });
+  
+          if (!response.ok) {
+              throw new Error('Failed to upload QR code');
+          }
+  
+          const uploadedFiles = await response.json();
+          console.log('Uploaded event image details:', uploadedFiles);
+  
+          // Return the uploaded file's ID
+          return uploadedFiles[0]; // Assuming the first file is what we need
+      } catch (error) {
+          console.error('Error uploading QR code:', error);
+          return null;
+      }
+  }
+  
+    async function addLogoHandler() {
+      
+      const logoId = logoPreview.id;
+
+      const response = await addLogo(logoId);
+      console.log("response to addLogo function is:", response);
+    }
+
+    async function uploadEventImageHandler() {
+
+    
+      const response = await uploadEventImage2(selectedFile);
+      console.log("uploaded image for event is:", response);
+      console.log("thsi is what the url is:", response.url);
+      console.log(`http://localhost:1337${response.url}`)
+      
+      
+        //const logo = response[0];  // Get the first item from the array
+        //console.log("URL about to be set is:", logo);  // Log the URL
+      setLogoPreview(response);
+      
+      
+      
+      
+}
+ useEffect(() => {
+  console.log("LogoPreview currently is:", logoPreview)
+ },[setLogoPreview])
+    
+
+    function handleOpenModal() {
+      setIsModalOpen(true);
+    }
+
+    function handleCloseModal() {
+      setIsModalOpen(false);
+    };
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0]; // Get the first selected file
+      setSelectedFile(file);
+  };
+  
     
   
     const handleEditEvent = (id) => {
@@ -113,6 +199,7 @@ export default function UserPage() {
           <div className="space-x-4">
             <Button onClick={pushToAddEvent}>Add New Event</Button>
             <Button variant="outline" onClick={handleLogOut}>Log Out</Button>
+            <Button variant="outline" onClick={handleOpenModal}>Add Logo</Button>
           </div>
         </div>
         {isLoading ? (
@@ -131,6 +218,28 @@ export default function UserPage() {
           </div>
         ) : (
           <div className="text-center">No events found.</div>
+        )}
+        {isModalOpen && (
+          <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-[1000]">
+            <div
+  className="relative bg-white p-5 rounded-lg max-w-lg w-11/12 text-center"
+  onClick={(e) => e.stopPropagation()}
+>
+<button
+  className="absolute top-2.5 right-2.5 bg-transparent border-none text-xl cursor-pointer"
+  onClick={handleCloseModal}
+>X</button>
+{ isModalOpen && logoPreview && ( <img
+  src={`http://localhost:1337${logoPreview.url}`}
+  alt="Ticket QR Code"
+  className="max-w-full h-auto"
+/>)}
+<input id="image" type="file" accept="image/*" onChange={handleFileChange} />
+<button onClick={uploadEventImageHandler}>preview logo</button>
+<button onClick={addLogoHandler}>add logo</button>
+            </div>
+          </div>
         )}
       </div>
     )

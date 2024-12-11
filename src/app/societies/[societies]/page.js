@@ -89,9 +89,16 @@ export default function societyPage() {
        if (selectedSociety2) {
         const { username, events } = selectedSociety2
 
+
+        console.log("these are all the events passed down to this use:", events);
+
+        const filteredEvents = events.filter(event => event.publishedAt !== null);
+
+console.log("these are the filtered events to prevent duplication:",filteredEvents);
+
         const currentDate = new Date()
-        const upcomingEvents = events.filter(event => new Date(event.eventDate) >= currentDate)
-        const pastEvents = events.filter(event => new Date(event.eventDate) < currentDate)
+        const upcomingEvents = filteredEvents.filter(event => new Date(event.eventDate) >= currentDate)
+        const pastEvents = filteredEvents.filter(event => new Date(event.eventDate) < currentDate)
 
 
 
@@ -144,10 +151,11 @@ function EventCard({ event, isPast = false }) {
     <Card className={`overflow-hidden ${isPast ? 'opacity-70' : ''} hover:transform hover:scale-110 transition-transform duration-300`}>
       <div className="relative h-48">
         <Image
-          src={eventImage.url}
+          src={`http://localhost:1337${eventImage ? eventImage.url : '/default-image.jpg'}`}
           alt={eventName}
-          layout="fill"
-          objectFit="cover"
+          fill
+          
+          style={{ objectFit: 'cover' }}
         />
       </div>
       <CardHeader>

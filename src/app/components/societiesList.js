@@ -216,11 +216,11 @@ if (societiesToShow) {
         {/*sampleSocietiesDataMap*/societiesToShow.map((society) => (
         <Link href={`/societies/${society.documentId}`}>
           <Card key={society.id} className="overflow-hidden">
-            <div 
-              className="h-40 bg-cover bg-center"
-              style={{
-                backgroundImage: `url('/placeholder.svg?height=160&width=320')`,
-              }}
+          <div
+            className="h-40 bg-cover bg-center"
+            style={{
+            backgroundImage: `url(${society.logo?.url || '/placeholder.svg?height=160&width=320'})`,
+            }}
             />
             <CardHeader>
               <CardTitle className="text-xl truncate">{society.username}</CardTitle>
