@@ -5,16 +5,16 @@ import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
 import Link from 'next/link'
 
 
-export function EventCard({ event, onCancel, onEdit, path, setIsAnimating, setIsOpen, isOpen }) {
+export function EventCard({ event, onCancel, onEdit, documentId, setIsAnimating, setIsOpen, isOpen, setModalDocumentId }) {
 
 
-   console.log("documentId is:", event.documentId);
+   console.log("documentId is:", documentId);
 
 
   return (
    
     <Card className="w-full max-w-sm overflow-hidden">
-    <Link href={`/events/${path}`}>
+    <Link href={`/events/${documentId}`}>
       <div className="relative h-48 w-full">
         <Image
           src={`http://localhost:1337/${event.eventImage?.url}` || "/placeholder.svg?height=192&width=384"}
@@ -46,6 +46,7 @@ export function EventCard({ event, onCancel, onEdit, path, setIsAnimating, setIs
         <Button variant="outline" onClick={() => {
           setIsAnimating(true)
           setIsOpen(!isOpen)
+          setModalDocumentId(documentId)
         }}>Edit</Button>
         <Button variant="destructive" onClick={(e) => onCancel(event.documentId)}>Cancel</Button>
       </CardFooter>

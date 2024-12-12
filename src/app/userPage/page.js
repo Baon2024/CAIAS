@@ -22,6 +22,7 @@ export default function UserPage() {
     const [ isModal2Open, setIsModal2Open ] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
     const [isAnimating, setIsAnimating] = useState(false)
+    const [ modalDocumentId, setModalDocumentId ] = useState('');
 
 
    async function getStuff() {
@@ -218,9 +219,10 @@ export default function UserPage() {
                 key={event.id}
                 event={event}
                 onCancel={cancelEventHandler}
-                path={event.documentId}
+                documentId={event.documentId}
                 setIsAnimating={setIsAnimating}
                 setIsOpen={setIsOpen}
+                setModalDocumentId
               />
             ))}
           </div>
@@ -257,6 +259,7 @@ export default function UserPage() {
             setIsOpen={setIsOpen}
             isAnimating={isAnimating}
             setIsAnimating={setIsAnimating}
+            modalDocumentId={modalDocumentId}
             />
           </div>
         </div>

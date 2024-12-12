@@ -18,12 +18,7 @@ export default function individualEvent() {
     //const sampleSocietiesDataMap = sampleEventsData[0];
     //console.log("sampleSocietiesDataMap borrowed here:", sampleSocietiesDataMap);
 
-    async function trialDocumentAPI() {
-        await strapi.documents('api:event.event').findOne({
-          documentId: events,
-          status: 'published'
-      })
-    }
+  
     //i want to see how this compared
 
     const [ eventsToFilterFrom, setEventsToFilterFrom ] = useState([]); 

@@ -1,14 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import updateAPIFunction from './updateAPIFunction';
 
-export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnimating}) {
+export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnimating, modalDocumentId}) {
   //const [isOpen, setIsOpen] = useState(false)
   //const [isAnimating, setIsAnimating] = useState(false)
+  const [ newEventName, setNewEventName ] = useState('');
 
   const toggleModal = () => {
     setIsAnimating(true)
     setIsOpen(!isOpen)
+  }
+
+  function updateEventNameHandler() {
+    
+    if (newEventName) {
+    const updateEventNameResponse = updateAPIFunction(modalDocumentId, newEventName);
+    //lets try and make this a reusable function, for each update
+    }
   }
 
   useEffect(() => {
@@ -34,8 +44,12 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 flex-grow overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-4">Modal Title</h2>
-              <p className="mb-4">This is the modal content. You can put any elements here.</p>
+              <h2 className="text-2xl font-bold mb-4">Edit Event Details</h2>
+              <div>
+                <label>change event name</label>
+                <input placeholder="enter new event name" type="text" value={newEventName} onChange={(e) => setNewEventName(e.target.value)} />
+                <button onClick={updateEventNameHandler}>Update</button>
+              </div>
               {/* Add more content here as needed */}
             </div>
             <div className="p-6 bg-gray-100 flex justify-end">
