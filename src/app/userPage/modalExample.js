@@ -8,15 +8,18 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
   //const [isAnimating, setIsAnimating] = useState(false)
   const [ newEventName, setNewEventName ] = useState('');
 
+  console.log("thsi si what the modalDocumentId is:", modalDocumentId);
+
   const toggleModal = () => {
     setIsAnimating(true)
     setIsOpen(!isOpen)
   }
 
-  function updateEventNameHandler() {
+  async function updateEventNameHandler() {
     
     if (newEventName) {
-    const updateEventNameResponse = updateAPIFunction(modalDocumentId, newEventName);
+    const updateEventNameResponse = await updateAPIFunction(modalDocumentId, newEventName);
+    console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
     //lets try and make this a reusable function, for each update
     }
   }

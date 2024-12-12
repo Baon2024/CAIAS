@@ -4,7 +4,9 @@ const token = localStorage.getItem('jwt');
 
 export default async function updateAPIFunction(documentId, newValue ) {
   
-  const url = `http://localhost:1337/api/events/${documentdId}`;
+  console.log("thsi is modalDocumentId inside updateAPIFunction:", documentId);
+
+  const url = `http://localhost:1337/api/events/${documentId}`;
 
   //may need different logic depending on each type of thing to update
   try {
@@ -15,7 +17,7 @@ export default async function updateAPIFunction(documentId, newValue ) {
                 Authorization: `Bearer ${token}`,  // Use JWT for authentication
             },
             body: JSON.stringify({
-                eventName: newValue,  
+                data: { eventName: newValue },  
                 },
             ),
         });

@@ -222,7 +222,7 @@ export default function UserPage() {
                 documentId={event.documentId}
                 setIsAnimating={setIsAnimating}
                 setIsOpen={setIsOpen}
-                setModalDocumentId
+                setModalDocumentId={setModalDocumentId}
               />
             ))}
           </div>
