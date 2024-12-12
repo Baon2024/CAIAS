@@ -51,11 +51,11 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
     }
   }, [isAnimating])
 
-  const updateEventHandler = (field) => {
+  /*const updateEventHandler = (field) => {
     // Placeholder for update logic
     console.log(`Updating ${field}:`, field === 'name' ? newEventName : field === 'description' ? newEventDescription : newEventLocation)
     // Here you would typically call an API or update state in the parent component
-  }
+  }*/
 
   return (
     <>
@@ -89,7 +89,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
                   value={newEventName}
                   onChange={(e) => setNewEventName(e.target.value)}
                 />
-                <Button onClick={() => updateEventHandler('name')} className="w-full">
+                <Button onClick={updateEventNameHandler} className="w-full">
                   Update Name
                 </Button>
               </div>
@@ -101,7 +101,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
                   value={newEventDescription}
                   onChange={(e) => setNewEventDescription(e.target.value)}
                 />
-                <Button onClick={() => updateEventHandler('description')} className="w-full">
+                <Button onClick={updateEventNameHandler} className="w-full">
                   Update Description
                 </Button>
               </div>
@@ -113,7 +113,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
                   value={newEventLocation}
                   onChange={(e) => setNewEventLocation(e.target.value)}
                 />
-                <Button onClick={() => updateEventHandler('location')} className="w-full">
+                <Button onClick={updateEventNameHandler} className="w-full">
                   Update Location
                 </Button>
               </div>
