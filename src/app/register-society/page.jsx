@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -51,7 +52,7 @@ export default function RegisterSociety() {
         body: JSON.stringify(dataToSend),
       })
       if (!response.ok) throw new Error('Failed to log in')
-      return await response.json()
+      return await response.json();
     } catch (error) {
       console.error("Login Error:", error)
       return null
@@ -66,7 +67,7 @@ export default function RegisterSociety() {
         body: JSON.stringify(dataToSend),
       })
       if (!response.ok) throw new Error('Failed to register')
-      return await response.json()
+      return await response.json();
     } catch (error) {
       console.error("Registration Error:", error)
       return null
@@ -93,7 +94,8 @@ export default function RegisterSociety() {
   }
 
   return (
-    <div className="container mx-auto p-4 flex justify-center items-center min-h-screen">
+    (<div
+      className="container mx-auto p-4 flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Society Portal</CardTitle>
@@ -109,11 +111,21 @@ export default function RegisterSociety() {
               <form onSubmit={loginSocietyHandler} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
-                  <Input id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                  <Input
+                    id="login-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="login-password">Password</Label>
-                  <Input id="login-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <Input
+                    id="login-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required />
                 </div>
                 <Button type="submit" className="w-full">Log In</Button>
               </form>
@@ -122,15 +134,30 @@ export default function RegisterSociety() {
               <form onSubmit={registerSocietyHandler} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="register-name">Society Name</Label>
-                  <Input id="register-name" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                  <Input
+                    id="register-name"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="register-email">Email</Label>
-                  <Input id="register-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                  <Input
+                    id="register-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="register-password">Password</Label>
-                  <Input id="register-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <Input
+                    id="register-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required />
                 </div>
                 <Button type="submit" className="w-full">Register Society</Button>
               </form>
@@ -150,8 +177,7 @@ export default function RegisterSociety() {
                   type="email"
                   value={emailForRecovery}
                   onChange={(e) => setEmailForRecovery(e.target.value)}
-                  placeholder="Enter your registered email"
-                />
+                  placeholder="Enter your registered email" />
               </div>
               <Button onClick={sendEmailCodeHandler} className="w-full">
                 Send Recovery Code
@@ -167,6 +193,7 @@ export default function RegisterSociety() {
           <AlertDescription>{message}</AlertDescription>
         </Alert>
       )}
-    </div>
-  )
+    </div>)
+  );
 }
+
