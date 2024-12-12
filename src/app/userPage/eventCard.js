@@ -5,7 +5,7 @@ import { CalendarIcon, ClockIcon, MapPinIcon } from 'lucide-react'
 import Link from 'next/link'
 
 
-export function EventCard({ event, onCancel, onEdit, path }) {
+export function EventCard({ event, onCancel, onEdit, path, setIsAnimating, setIsOpen, isOpen }) {
 
 
    console.log("documentId is:", event.documentId);
@@ -43,7 +43,10 @@ export function EventCard({ event, onCancel, onEdit, path }) {
       </CardContent>
       </Link>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={() => onEdit(event.id)}>Edit</Button>
+        <Button variant="outline" onClick={() => {
+          setIsAnimating(true)
+          setIsOpen(!isOpen)
+        }}>Edit</Button>
         <Button variant="destructive" onClick={(e) => onCancel(event.documentId)}>Cancel</Button>
       </CardFooter>
     </Card>

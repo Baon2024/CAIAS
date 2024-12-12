@@ -8,6 +8,7 @@ import cancelEvent from "./userPageAPIs";
 import { uploadEventImage } from "../apiFunctions/apiToAddEvent";
 import addLogo from "./addLogoAPI";
 import { fetchUser } from "./addLogoAPI";
+import ModalExample from "./modalExample";
 
 export default function UserPage() {
 
@@ -18,6 +19,9 @@ export default function UserPage() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ selectedFile, setSelectedFile ] = useState(null);
     const [ logoPreview, setLogoPreview ] = useState(null);
+    const [ isModal2Open, setIsModal2Open ] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
+    const [isAnimating, setIsAnimating] = useState(false)
 
 
    async function getStuff() {
@@ -68,6 +72,9 @@ export default function UserPage() {
           return null;
       }
   }
+
+  
+
   
     async function addLogoHandler() {
       
@@ -211,8 +218,9 @@ export default function UserPage() {
                 key={event.id}
                 event={event}
                 onCancel={cancelEventHandler}
-                onEdit={handleEditEvent}
                 path={event.documentId}
+                setIsAnimating={setIsAnimating}
+                setIsOpen={setIsOpen}
               />
             ))}
           </div>
@@ -241,6 +249,17 @@ export default function UserPage() {
             </div>
           </div>
         )}
+        <div>
+          <div>
+            <ModalExample 
+             
+            isOpen={isOpen} 
+            setIsOpen={setIsOpen}
+            isAnimating={isAnimating}
+            setIsAnimating={setIsAnimating}
+            />
+          </div>
+        </div>
       </div>
     )
   }
