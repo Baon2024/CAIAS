@@ -1,12 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import updateAPIFunction from './updateAPIFunction';
+import updateAPIFunctionName, { updateAPIFunctionDescription, updateAPIFunctionLocation } from './updateAPIFunction';
+
 
 export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnimating, modalDocumentId}) {
   //const [isOpen, setIsOpen] = useState(false)
   //const [isAnimating, setIsAnimating] = useState(false)
   const [ newEventName, setNewEventName ] = useState('');
+  const [ newEventDescription, setNewEventDescription ] = useState('');
+  const [ newEventLocation, setNewEventLocation ] = useState('');
 
   console.log("thsi si what the modalDocumentId is:", modalDocumentId);
 
@@ -18,10 +21,23 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
   async function updateEventNameHandler() {
     
     if (newEventName) {
-    const updateEventNameResponse = await updateAPIFunction(modalDocumentId, newEventName);
+        
+    const updateEventNameResponse = await updateAPIFunctionName(modalDocumentId, newEventName);
     console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
     //lets try and make this a reusable function, for each update
-    }
+    } 
+    else if (newEventDescription) {
+        
+        const updateEventNameResponse = await updateAPIFunctionDescription(modalDocumentId, newEventDescription);
+        console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
+        //lets try and make this a reusable function, for each update
+        }
+        else if (newEventLocation) {
+            
+            const updateEventNameResponse = await updateAPIFunctionLocation(modalDocumentId, newEventLocation);
+            console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
+            //lets try and make this a reusable function, for each update
+            }
   }
 
   useEffect(() => {
@@ -51,6 +67,12 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
               <div>
                 <label>change event name</label>
                 <input placeholder="enter new event name" type="text" value={newEventName} onChange={(e) => setNewEventName(e.target.value)} />
+                <button onClick={updateEventNameHandler}>Update</button>
+                <label>change event description</label>
+                <input placeholder="enter new event name" type="text" value={newEventDescription} onChange={(e) => setNewEventDescription(e.target.value)} />
+                <button onClick={updateEventNameHandler}>Update</button>
+                <label>change event location</label>
+                <input placeholder="enter new event name" type="text" value={newEventLocation} onChange={(e) => setNewEventLocation(e.target.value)} />
                 <button onClick={updateEventNameHandler}>Update</button>
               </div>
               {/* Add more content here as needed */}
