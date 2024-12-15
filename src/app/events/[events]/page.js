@@ -62,7 +62,16 @@ export default function individualEvent() {
         <> {selectedEvent2 && (
           <div>
           <p>placeholder page for individual event</p>
-          
+          {selectedEvent2.eventUrlLink ? (
+  <button>
+    <Link href={`${selectedEvent2.eventUrlLink}`} target="_blank" rel="noopener noreferrer">
+      Link
+    </Link>
+  </button>
+) : (
+  null
+)}
+
           
           <p>{selectedEvent2.eventName}</p>
           <Link href={`/societies/${selectedEvent2.society.documentId}`}>

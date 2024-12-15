@@ -5,15 +5,20 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { X } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import updateAPIFunctionName, { updateAPIFunctionDescription, updateAPIFunctionLocation } from './updateAPIFunction';
+import { uploadEventImage } from "../apiFunctions/apiToAddEvent"
+import updateAPIFunctionName, { updateAPIFunctionDescription, updateAPIFunctionLocation, uploadEventImageHandler, updateAPIFunctionImage, updateAPIFunctionUrl, updateTags, updateRemoveTag } from './updateAPIFunction';
 
 
-export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnimating, modalDocumentId}) {
+export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnimating, modalDocumentId, setUpdateTrigger, tags, setTags}) {
   //const [isOpen, setIsOpen] = useState(false)
   //const [isAnimating, setIsAnimating] = useState(false)
   const [ newEventName, setNewEventName ] = useState('');
   const [ newEventDescription, setNewEventDescription ] = useState('');
   const [ newEventLocation, setNewEventLocation ] = useState('');
+  const [ selectedFile, setSelectedFile ] = useState(null);
+  const [ newEventImage, setNewEventImage ] = useState(null);
+  const [ newEventUrlLink, setNewEventUrlLink ] = useState('');
+  const [ newTag, setNewTag ] = useState('');
 
   console.log("thsi si what the modalDocumentId is:", modalDocumentId);
 
@@ -21,6 +26,35 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
     setIsAnimating(true)
     setIsOpen(!isOpen)
   }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the first selected file
+    setSelectedFile(file);
+};
+async function uploadEventImageHandler() {
+
+    //this puts new eventImage in media library
+    const response = await uploadEventImage(selectedFile);
+    console.log("uploaded image for event is:", response);
+    setNewEventImage(response);
+    //function to put id of newEventImage in database
+    console.log("newEventImage vakye is:", newEventImage);
+    
+    const updateEventImageResponse = await updateAPIFunctionImage(modalDocumentId, response);
+    console.log("this is the returned updateEVentNameImage value:", updateEventImageResponse);
+    //lets try and make this a reusable function, for each update
+    setUpdateTrigger((prev) => prev + 1);
+}
+ async function updateUrlHandler() {
+
+    const updateUrlResponse = await updateAPIFunctionUrl(modalDocumentId, newEventUrlLink);
+    console.log("returned updateUrlResponse is:", updateUrlResponse);
+    if (updateUrlResponse.data.eventUrlLink = newEventUrlLink) {
+        alert("event url link successfully updated!");
+    }
+    setUpdateTrigger((prev) => prev + 1);
+ }
+
 
   async function updateEventNameHandler() {
     
@@ -30,6 +64,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
     console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
     //lets try and make this a reusable function, for each update
     } 
+    
     else if (newEventDescription) {
         
         const updateEventNameResponse = await updateAPIFunctionDescription(modalDocumentId, newEventDescription);
@@ -42,6 +77,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
             console.log("this is the returned updateEVentNameResponse value:", updateEventNameResponse);
             //lets try and make this a reusable function, for each update
             }
+    setUpdateTrigger((prev) => prev + 1);
   }
 
   useEffect(() => {
@@ -56,6 +92,26 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
     console.log(`Updating ${field}:`, field === 'name' ? newEventName : field === 'description' ? newEventDescription : newEventLocation)
     // Here you would typically call an API or update state in the parent component
   }*/
+
+    async function addNewTag() {
+        //make api call to database, to return all tags bar that one.
+        console.log("the valye of newTag before being passed is:", newTag);
+        const returnedResponse = await updateTags(modalDocumentId, newTag);
+        console.log("this is the response for updateTags value returned:", returnedResponse);
+        setTags(returnedResponse.data.tags)
+        console.log(tags);
+        setUpdateTrigger((prev) => prev + 1);
+        setNewTag('');
+    }
+
+    async function removeExistingTag(tag) {
+        //api call to remove tag
+        //then setTag to the new array returned by the function
+        console.log("the valye of tag before being passed is:", tag);
+        const returnedResponse = await updateRemoveTag(modalDocumentId, tag);
+        setTags(returnedResponse.data.tags);
+        setUpdateTrigger((prev) => prev + 1);
+    }
 
   return (
     <>
@@ -89,7 +145,7 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
                   value={newEventName}
                   onChange={(e) => setNewEventName(e.target.value)}
                 />
-                <Button onClick={updateEventNameHandler} className="w-full">
+                <Button type="button" onClick={updateEventNameHandler} className="w-full">
                   Update Name
                 </Button>
               </div>
@@ -116,6 +172,33 @@ export default function ModalExample({isOpen, setIsOpen, isAnimating, setIsAnima
                 <Button onClick={updateEventNameHandler} className="w-full">
                   Update Location
                 </Button>
+              </div>
+              <div>
+                <Label>Event Image</Label>
+                <Input type="file" accept="jpg/png" onChange={handleFileChange} />
+                <button type="button" onClick={uploadEventImageHandler}>Update Event Image</button>
+              </div>
+              <div>
+                <Label>Event link URL</Label>
+                <Input type="url" placeholder="enter url of event page" value={newEventUrlLink} onChange={(e) => setNewEventUrlLink(e.target.value)} />
+                <button type="button" onClick={updateUrlHandler}>update event link</button>
+              </div>
+              <div>
+                <Label></Label>
+                <Input type="text" value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                <button type="button" onClick={addNewTag}>update tags</button>
+                <Label>existing tags</Label>
+                {tags.map((tag, index) => (
+                <span key={index} className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm inline-flex items-center max-w-fit">
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeExistingTag(tag)}
+                    className="ml-1 focus:outline-none"
+                  >
+                    <X size={14} />
+                  </button>
+                </span>))}
               </div>
             </form>
           </div>

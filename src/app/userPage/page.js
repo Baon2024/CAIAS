@@ -23,6 +23,8 @@ export default function UserPage() {
     const [isOpen, setIsOpen] = useState(false)
     const [isAnimating, setIsAnimating] = useState(false)
     const [ modalDocumentId, setModalDocumentId ] = useState('');
+    const [ updateTrigger, setUpdateTrigger ] = useState(0);
+    const [ tags, setTags ] = useState([]);
 
 
    async function getStuff() {
@@ -179,7 +181,7 @@ export default function UserPage() {
       }
   
       getSocietyEvents();
-    }, [])
+    }, [updateTrigger])
   
 
     useEffect(() => {
@@ -223,6 +225,7 @@ export default function UserPage() {
                 setIsAnimating={setIsAnimating}
                 setIsOpen={setIsOpen}
                 setModalDocumentId={setModalDocumentId}
+                setTags={setTags}
               />
             ))}
           </div>
@@ -260,6 +263,9 @@ export default function UserPage() {
             isAnimating={isAnimating}
             setIsAnimating={setIsAnimating}
             modalDocumentId={modalDocumentId}
+            setUpdateTrigger={setUpdateTrigger}
+            tags={tags}
+            setTags={setTags}
             />
           </div>
         </div>
