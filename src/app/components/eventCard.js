@@ -23,12 +23,17 @@ export default function EventCard({
   id,
   eventUrlLink
 }) {
+
+
+console.log("eventImage value is:", eventImage);
+//{`http://localhost:1337/${eventImage?.url || '/placeholder.svg?height=160&width=320'}`}
+
   return (
   <Link href={`/events/${documentId}`}>
     <Card className="h-full flex flex-col">
       <div className="aspect-video relative">
         <img
-          src={eventImage?.url || "/placeholder.svg?height=200&width=400"}
+          src={`http://localhost:1337/${eventImage?.url || '/placeholder.svg?height=160&width=320'}`}
           alt={eventName}
           className="object-cover w-full h-full rounded-t-lg"
         />

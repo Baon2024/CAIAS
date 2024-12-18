@@ -145,15 +145,30 @@ console.log("these are the filtered events to prevent duplication:",filteredEven
 
 function EventCard({ event, isPast = false }) {
   const { eventName, eventDate, eventTime, eventDescription, eventLocation, eventImage, eventUrlLink, documentId } = event
+  console.log("eventImage value is:", eventImage);
+
+/* 
+
+<Image
+          src={`http://localhost:1337/${event.eventImage?.url}` || "/placeholder.svg?height=192&width=384"}
+          alt={event.eventName}
+          width={500}  // specify width
+          height={300} // specify height
+        />
+
+*/
+
+
 
   return (
    <Link href={`/events/${documentId}`}>
     <Card className={`overflow-hidden ${isPast ? 'opacity-70' : ''} hover:transform hover:scale-110 transition-transform duration-300`}>
       <div className="relative h-48">
         <Image
-          src={`http://localhost:1337${eventImage ? eventImage.url : '/default-image.jpg'}`}
+          src={`http://localhost:1337/${eventImage ? eventImage.url : '/default-image.jpg'}`}
           alt={eventName}
-          fill
+          width={500}  // specify width
+          height={300} // specify height
           
           style={{ objectFit: 'cover' }}
         />

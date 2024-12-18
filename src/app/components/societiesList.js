@@ -218,7 +218,7 @@ if (societiesToShow) {
           <Card key={society.id} className="overflow-hidden">
           <div className="h-40 relative">
   <Image
-    src={`http://localhost:1337${society.logo?.url || '/placeholder.svg?height=160&width=320'}`}
+    src={`http://localhost:1337/${society.logo?.url || '/placeholder.svg?height=160&width=320'}`}
     alt={society.username || 'Society Logo'}
     layout="fill"  // This makes the image fill the container
     objectFit="cover"  // Ensures the image covers the container
